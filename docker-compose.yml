@@ -1,0 +1,31 @@
+services:
+  psql:
+    image: postgres:12
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "2345:5432"
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
+
+  backend:
+    build: ./backend
+    ports:
+      - "${BACKEND_PORT}:3000"
+    depends_on:
+      - psql
+    environment:
+      - DB_HOST=psql
+      - DB_NAME=${POSTGRES_DB}
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    depends_on:
+      - backend
+    environment:
+      - DB_HOST=psql
