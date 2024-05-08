@@ -13,6 +13,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from pinecone import Pinecone
+from pydantic import BaseModel
+
 
 ### Constants 
 PINECONE_NAME_SPACE="search"
@@ -31,7 +33,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 metadata = db.MetaData()
-# TODO: lazy load if possible 
+# TODO: lazy load if possible or download model dur
 model = SentenceTransformer('sentence-transformers/msmarco-MiniLM-L-6-v3')
 
 
@@ -475,11 +477,14 @@ def read_root():
     return len(chunks)
 
 
-@app.get("/search")
-def read_item(search_term: str):
-    print("here", search_term)
-    search_vector = get_chunk_embeddings([search_term])
-    print("Vector", search_vector)
+class SearchQuery(BaseModel):
+   search_term: str 
+   
+@app.post("/search")
+def read_item(query: SearchQuery):
+    print(query, query.search_term)
+
+    search_vector = get_chunk_embeddings([query.search_term])
     search_results  = index.query(
         namespace=PINECONE_NAME_SPACE,
         vector=search_vector[0].tolist(),
@@ -487,11 +492,7 @@ def read_item(search_term: str):
         include_values=False,
         include_metadata=True,
     )    
-
-    print("Got results")
-    print(search_results)
-    print(search_results["matches"])
-
     matchIds = [int(match["id"]) for match in search_results["matches"]]
+    matchChunks = session.query(Chunks).filter(Chunks.id.in_(matchIds)).all()
 
-    return matchIds
+    return matchChunks
