@@ -1,7 +1,5 @@
 from typing import Optional
 import sqlalchemy as db
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.orm import sessionmaker
 import os 
 from fastapi import FastAPI, File, UploadFile
 from bs4 import BeautifulSoup
@@ -50,7 +48,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# TODO Move to models dir 
 class Chunks(Base):
     __tablename__ = 'chunks'
     __table_args__ = {'schema': 'core'}
@@ -107,12 +104,10 @@ def write(filename, chunks, embeddings):
 
 @app.get("/")
 def read_root():
-    
     return "Hello world :)"
 
 @app.post("/upload")
 def upload(file: UploadFile = File(...)):
-    print("Got file", file)
     try:
         filename=file.filename
         contents = file.file.read()
@@ -125,11 +120,12 @@ def upload(file: UploadFile = File(...)):
     finally:
         file.file.close()
 
-    return {"message": f"Successfully uploaded {file.filename}"}
+    return { "message": f"Successfully uploaded {file.filename}" }
 
 class SearchQuery(BaseModel):
    search_term: str 
    company_filter: Optional[str]
+   limit: Optional[int] = 5
 
 @app.post("/search")
 def read_item(query: SearchQuery):
@@ -144,7 +140,7 @@ def read_item(query: SearchQuery):
     search_results  = index.query(
         namespace=PINECONE_NAME_SPACE,
         vector=search_vector[0].tolist(),
-        top_k=2,
+        top_k=query.limit,
         include_values=False,
         include_metadata=True,
         filter=filter,

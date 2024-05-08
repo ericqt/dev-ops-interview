@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react';
-import Select from 'react-select';
 
 
 export default function Home() {
@@ -11,8 +10,6 @@ export default function Home() {
   const [companyFilter, setCompanyFilter] = React.useState('')
   const [uploading, setUploading] = React.useState(false);
   const [companyOptions, setOptions] = React.useState([]);
-
-  console.log({ companyOptions })
 
   React.useEffect(() => {
     (async () => {
@@ -87,8 +84,8 @@ export default function Home() {
           onBlur={() => setFocus(false)}
         />
       </div>
-      <div >
-      <select value={companyFilter} onChange={(e) => setCompanyFilter(e.currentTarget.value)} className="py-2 text-sm text-gray-700 dark:text-gray-200">
+      <div className="block p-2 text-gray-900 bg-gray-50 rounded border border-gray-300 focus:pl-3">
+      <select value={companyFilter} onChange={(e) => setCompanyFilter(e.currentTarget.value)} className="py-2 text-sm text-gray-900">
         {companyOptions.map((company) => (
           <option key={company} value={company} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
             {company}

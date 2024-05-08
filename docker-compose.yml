@@ -23,7 +23,6 @@ services:
       - DB_NAME=${POSTGRES_DB}
       - PINECONE_API_KEY=${PINECONE_API_KEY}
 
-
   frontend:
     build: ./frontend
     ports:
