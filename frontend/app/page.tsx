@@ -1,6 +1,8 @@
 'use client'
 
 import * as React from 'react';
+import Select from 'react-select';
+
 
 export default function Home() {
   const [searchResults, setSearchResults] = React.useState('');
@@ -85,10 +87,10 @@ export default function Home() {
           onBlur={() => setFocus(false)}
         />
       </div>
-      <div>
-      <select value={companyFilter} onChange={(e) => setCompanyFilter(e.currentTarget.value)}>
+      <div >
+      <select value={companyFilter} onChange={(e) => setCompanyFilter(e.currentTarget.value)} className="py-2 text-sm text-gray-700 dark:text-gray-200">
         {companyOptions.map((company) => (
-          <option key={company} value={company}>
+          <option key={company} value={company} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
             {company}
           </option>
         ))}
