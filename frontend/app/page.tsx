@@ -104,7 +104,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col space-y-4">
-      <h1 className="text-xl">Hebbia Search</h1>
+      <h1 className="text-xl">Vector Search</h1>
       <>{searchBar}</>
       <>{searchResults.length == 0 ? (<></>) : (<div className="text-xs" ><pre>{JSON.stringify(searchResults, null, 2)}</pre></div>)}</>
       <div>

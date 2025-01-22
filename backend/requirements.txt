@@ -1,7 +1,7 @@
-fastapi>=0.111.0,<0.113.0
+fastapi[standard]
 pydantic>=2.7.0,<3.0.0
 beautifulsoup4>=4.0.0
 sqlalchemy>= 2.0.0
-sentence-transformers==2.2.2
+sentence-transformers
 psycopg2-binary>=2.9.9
 pinecone-client>=4.0.0
