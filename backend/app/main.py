@@ -24,7 +24,7 @@ DATABASE_URL = "postgresql+psycopg2://postgres:postgres@" + os.environ['DB_HOST'
 
 ### Singltons 
 pc = Pinecone(api_key=os.environ['PINECONE_API_KEY'])
-index = pc.Index("hebbia-search")
+index = pc.Index("corpus-search")
 app = FastAPI()
 engine = db.create_engine(DATABASE_URL)
 connection = engine.connect()
