@@ -4,4 +4,5 @@ beautifulsoup4>=4.0.0
 sqlalchemy>= 2.0.0
 sentence-transformers
 psycopg2-binary>=2.9.9
-pinecone-client>=4.0.0
+pinecone>=5.1.0
+ipdb

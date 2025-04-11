@@ -98,7 +98,6 @@ def write(filename, chunks, embeddings):
         session.add(newChunkRow)
         session.commit()
         vectors.append({"id": str(newChunkRow.id), "values": embeddings[idx], "metadata": { "company_name": company_name }})
-    
     index.upsert(vectors,namespace= PINECONE_NAME_SPACE)
     
 
@@ -116,6 +115,8 @@ def upload(file: UploadFile = File(...)):
         embeddings = get_chunk_embeddings(chunks)
         write(filename, chunks, embeddings)
     except Exception:
+        import ipdb; ipdb.set_trace()
+        print(f'the exception being thrown: {Exception}')
         return {"message": "There was an error uploading the file"}
     finally:
         file.file.close()
